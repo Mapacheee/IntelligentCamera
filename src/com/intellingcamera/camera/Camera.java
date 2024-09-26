@@ -9,6 +9,8 @@ import org.opencv.videoio.VideoCapture;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Camera extends JFrame {
 
@@ -40,6 +42,17 @@ public class Camera extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 isClicked = true;
+            }
+        });
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+
+                super.windowClosing(e);
+                videoCapture.release();
+                image.release();
+                System.exit(0);
+
             }
         });
 
