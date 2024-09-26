@@ -70,10 +70,10 @@ public class Camera extends JFrame {
                     }
 
                     Imgcodecs.imwrite("imagenes/" + nameFile + ".jpg", image);
-
                     isClicked = false;
                 }
-            } else {
+            }
+            else {
                 System.out.println("No se pudo capturar la imagen");
             }
         }
