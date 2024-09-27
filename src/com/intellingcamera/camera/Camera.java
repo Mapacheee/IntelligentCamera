@@ -60,7 +60,7 @@ public class Camera extends JFrame {
 
     public void startCamera() {
 
-        videoCapture = new VideoCapture(0); // Asegúrate de que la cámara se inicialice correctamente
+        videoCapture = new VideoCapture(0);
         image = new Mat();
         byte[] imageData;
 
