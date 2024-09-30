@@ -1,6 +1,6 @@
 package com.intellingcamera.camera;
 
-import org.opencv.core.Core;
+import com.intellingcamera.ia.FaceDetector;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -22,8 +22,6 @@ public class Camera extends JFrame {
 
     public Camera() {
 
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
         setLayout(null);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,6 +40,7 @@ public class Camera extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 isClicked = true;
+                
             }
         });
 
@@ -72,6 +71,7 @@ public class Camera extends JFrame {
                 Imgcodecs.imencode(".jpg", image, buffer);
 
                 imageData = buffer.toArray();
+
                 icon = new ImageIcon(imageData);
                 cameraScreen.setIcon(icon);
 
@@ -84,6 +84,8 @@ public class Camera extends JFrame {
 
                     Imgcodecs.imwrite("imagenes/" + nameFile + ".jpg", image);
                     isClicked = false;
+
+                    FaceDetector.detectFaces(image);
                 }
             }
             else {
