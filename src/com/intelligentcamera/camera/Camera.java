@@ -1,6 +1,6 @@
-package com.intellingcamera.camera;
+package com.intelligentcamera.camera;
 
-import com.intellingcamera.ia.FaceDetector;
+import com.intelligentcamera.recognition.FaceDetector;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -25,7 +25,7 @@ public class Camera extends JFrame {
         setLayout(null);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Intento de camara inteligente :v");
+        setTitle("Intento de cámara inteligente :v");
         setSize(630, 580);
 
         cameraScreen = new JLabel();
@@ -40,7 +40,7 @@ public class Camera extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 isClicked = true;
-                
+
             }
         });
 
@@ -65,7 +65,10 @@ public class Camera extends JFrame {
 
         ImageIcon icon;
         while (true) {
+
             if (videoCapture.read(image)) {
+
+                FaceDetector.detectFaces(image);
 
                 final MatOfByte buffer = new MatOfByte();
                 Imgcodecs.imencode(".jpg", image, buffer);
@@ -84,8 +87,6 @@ public class Camera extends JFrame {
 
                     Imgcodecs.imwrite("imagenes/" + nameFile + ".jpg", image);
                     isClicked = false;
-
-                    FaceDetector.detectFaces(image);
                 }
             }
             else {

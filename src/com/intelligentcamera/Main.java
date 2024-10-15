@@ -1,6 +1,6 @@
-package com.intellingcamera;
+package com.intelligentcamera;
 
-import com.intellingcamera.camera.Camera;
+import com.intelligentcamera.camera.Camera;
 import org.opencv.core.Core;
 
 import java.awt.*;
