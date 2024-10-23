@@ -1,60 +1,69 @@
 package com.intelligentcamera.camera;
 
 import com.intelligentcamera.recognition.FaceDetector;
+import com.intelligentcamera.recognition.MovementDetector;
+import com.intelligentcamera.recognition.PoseDetector;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.videoio.VideoCapture;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class Camera extends JFrame {
 
     private JLabel cameraScreen;
-    private JButton captureButton;
     private VideoCapture videoCapture;
     private Mat image;
-    private boolean isClicked = false;
+    private MovementDetector movementDetector;
+    private PoseDetector poseDetector;
 
     public Camera() {
 
-        setLayout(null);
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Intento de cámara inteligente :v");
-        setSize(630, 580);
+        setTitle("Cámara inteligente con detección de movimiento y esqueleto");
+        setSize(650, 520);
 
         cameraScreen = new JLabel();
-        cameraScreen.setBounds(0, 0, 640, 480);
+        cameraScreen.setBounds(0, 0, 1280, 720);
         add(cameraScreen);
 
-        captureButton = new JButton("capturar");
-        captureButton.setBounds(300, 480, 80, 40);
-        add(captureButton);
-
-        captureButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                isClicked = true;
-
-            }
-        });
-
         addWindowListener(new WindowAdapter() {
+
             public void windowClosing(WindowEvent e) {
 
                 super.windowClosing(e);
                 videoCapture.release();
                 image.release();
                 System.exit(0);
-
             }
         });
 
+        movementDetector = new MovementDetector();
+
+        try {
+
+            poseDetector = new PoseDetector("src/com/intelligentcamera/resources/pose_deploy_linevec_faster_4_stages.prototxt",
+                                            "src/com/intelligentcamera/resources/pose_iter_440000.caffemodel");
+
+        }
+        catch (Exception e) {
+
+            System.out.println("error al intentar obtener el pose_deploy_linevec_faster_4_stages.prototxt y " +
+                               "pose_iter_440000.caffemodel");
+            e.printStackTrace();
+
+        }
+
+        /*
+        links:
+        https://github.com/foss-for-synopsys-dwc-arc-processors/synopsys-caffe-models/blob/master/caffe_models/openpose/caffe_model/pose_iter_440000.caffemodel
+        https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/models/pose/mpi/pose_deploy_linevec_faster_4_stages.prototxt
+
+        ponerlos en la carpeta resources
+        */
     }
 
     public void startCamera() {
@@ -68,29 +77,17 @@ public class Camera extends JFrame {
 
             if (videoCapture.read(image)) {
 
+                movementDetector.detectMovement(image);
+                //poseDetector.detectAndDrawSkeleton(image);
                 FaceDetector.detectFaces(image);
 
                 final MatOfByte buffer = new MatOfByte();
                 Imgcodecs.imencode(".jpg", image, buffer);
 
                 imageData = buffer.toArray();
-
                 icon = new ImageIcon(imageData);
                 cameraScreen.setIcon(icon);
 
-                if (isClicked) {
-                    String nameFile = JOptionPane.showInputDialog("ingresa el nombre de la imagen.");
-
-                    if (nameFile == null || nameFile.trim().isEmpty()) {
-                        nameFile = "poto";
-                    }
-
-                    Imgcodecs.imwrite("imagenes/" + nameFile + ".jpg", image);
-                    isClicked = false;
-                }
-            }
-            else {
-                System.out.println("No se pudo capturar la imagen");
             }
         }
     }

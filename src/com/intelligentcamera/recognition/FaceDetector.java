@@ -1,12 +1,9 @@
 package com.intelligentcamera.recognition;
 
 import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
-
-import java.io.IOException;
 
 public class FaceDetector {
 
@@ -30,25 +27,27 @@ public class FaceDetector {
         CascadeClassifier faceCascade = new CascadeClassifier();
 
         try {
+
             faceCascade.load("src/com/intelligentcamera/resources/haarcascade_frontalface_alt2.xml");
-        } catch (Exception e) {
-            System.out.println("Error loading face cascade. Not found.");
+
         }
+        catch (Exception e) {
+
+            System.out.println("Error al cargar el pre entreno :,v");
+            e.printStackTrace();
+
+        }
+
         faceCascade.detectMultiScale(hierarchy, faces, 1.1, 2
                                     ,0| Objdetect.CASCADE_SCALE_IMAGE,
                                     new Size(faceSize, faceSize), new Size());
 
-        Rect[]  faceArray = faces.toArray();
+        Rect[] faceArray = faces.toArray();
 
         for (int i = 0; i < faceArray.length; i++) {
 
             Imgproc.rectangle(image, faceArray[i].tl(), faceArray[i].br(), new Scalar(255, 0, 0));
 
         }
-
-        Imgcodecs.imwrite("imagenes/ia/poto.jpg", image);
-        System.out.println("Se detectó a una persona!!!");
-
     }
-
 }
