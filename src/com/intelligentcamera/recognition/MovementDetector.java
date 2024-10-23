@@ -18,8 +18,6 @@ public class MovementDetector {
         diffFrame = new Mat();
         grayFrame = new Mat();
 
-
-
     }
 
     public void detectMovement(Mat currentFrame) {
@@ -51,5 +49,6 @@ public class MovementDetector {
         }
 
         grayFrame.copyTo(previousFrame);
+
     }
 }

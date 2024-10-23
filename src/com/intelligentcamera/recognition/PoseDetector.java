@@ -19,13 +19,16 @@ public class PoseDetector {
             {1, 8}, {8, 9}, {9, 10}, {1, 11}, {11, 12}, {12, 13},
             {1, 0}, {0, 14}, {14, 16}, {0, 15}, {15, 17}
 
+
     };
 
-    public PoseDetector(String modelPath, String configPath) {
+    public PoseDetector() {
 
-        poseNet = Dnn.readNetFromCaffe(modelPath, configPath);
+        poseNet = Dnn.readNetFromCaffe("src/com/intelligentcamera/resources/pose_deploy_linevec_faster_4_stages.prototxt",
+                "src/com/intelligentcamera/resources/pose_iter_440000.caffemodel");;
 
     }
+
 
     public void detectAndDrawSkeleton(Mat frame) {
 

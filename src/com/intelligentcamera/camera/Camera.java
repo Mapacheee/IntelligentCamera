@@ -43,27 +43,6 @@ public class Camera extends JFrame {
 
         movementDetector = new MovementDetector();
 
-        try {
-
-            poseDetector = new PoseDetector("src/com/intelligentcamera/resources/pose_deploy_linevec_faster_4_stages.prototxt",
-                                            "src/com/intelligentcamera/resources/pose_iter_440000.caffemodel");
-
-        }
-        catch (Exception e) {
-
-            System.out.println("error al intentar obtener el pose_deploy_linevec_faster_4_stages.prototxt y " +
-                               "pose_iter_440000.caffemodel");
-            e.printStackTrace();
-
-        }
-
-        /*
-        links:
-        https://github.com/foss-for-synopsys-dwc-arc-processors/synopsys-caffe-models/blob/master/caffe_models/openpose/caffe_model/pose_iter_440000.caffemodel
-        https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/models/pose/mpi/pose_deploy_linevec_faster_4_stages.prototxt
-
-        ponerlos en la carpeta resources
-        */
     }
 
     public void startCamera() {
